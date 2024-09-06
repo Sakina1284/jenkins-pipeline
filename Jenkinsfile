@@ -6,32 +6,36 @@ pipeline {
             steps {
                 script {
                     echo "Building the code using Maven"
-                    // Maven 
+                    // Maven
                 }
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
-                script {
-                    echo "Running unit and integration tests"
-                    // JUnit and Tricentis Tosca
-                }
+                echo "Running unit and integration tests"
+                // JUnit and Tricentis Tosca
             }
             post {
                 success {
-                    mail to: 'sakeenanaleem123@gmail.com',
-                         subject: "Status of Unit and Integration Tests: SUCCESS",
-                         body: "The Unit and Integration Tests stage completed successfully."
+                    emailext (
+                        to: "sakeenanaleem123@gmail.com",
+                        subject: "Status of Unit and Integration Tests: SUCCESS",
+                        body: "The Unit and Integration Tests stage completed successfully.",
+                        attachLog: true
+                    )
                 }
                 failure {
-                    mail to: 'sakeenanaleem123@gmail.com',
-                         subject: "Status of Unit and Integration Tests: FAILURE",
-                         body: "The Unit and Integration Tests stage failed. Please find the logs attached."
+                    emailext (
+                        to: "sakeenanaleem123@gmail.com",
+                        subject: "Status of Unit and Integration Tests: FAILURE",
+                        body: "The Unit and Integration Tests stage failed. Please find the logs attached.",
+                        attachLog: true
+                    )
                 }
             }
         }
-
+        
         stage('Code Analysis') {
             steps {
                 script {
@@ -43,25 +47,29 @@ pipeline {
 
         stage('Security Scan') {
             steps {
-                script {
-                    echo "Performing security scan"
-                    // OWASP ZAP
-                }
+                echo "Performing security scan"
+                // OWASP ZAP
             }
             post {
                 success {
-                    mail to: 'sakeenanaleem123@gmail.com',
-                         subject: "Status of Security Scan: SUCCESS",
-                         body: "The security scan stage completed successfully."
+                    emailext (
+                        to: "sakeenanaleem123@gmail.com",
+                        subject: "Status of Security Scan: SUCCESS",
+                        body: "The security scan stage completed successfully.",
+                        attachLog: true
+                    )
                 }
                 failure {
-                    mail to: 'sakeenanaleem123@gmail.com',
-                         subject: "Status of Security Scan: FAILURE",
-                         body: "The security scan stage failed. Please find the logs attached."
+                    emailext (
+                        to: "sakeenanaleem123@gmail.com",
+                        subject: "Status of Security Scan: FAILURE",
+                        body: "The security scan stage failed.",
+                        attachLog: true
+                    )
                 }
             }
         }
-
+        
         stage('Deploy to Staging') {
             steps {
                 script {
